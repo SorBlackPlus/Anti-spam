@@ -1,5 +1,5 @@
--- #Beyond Reborn Robot
--- #@BeyondTeam
+-- #Prime anti-spam Robot
+-- @PrimeTeam
 
 tdcli = dofile('./tg/tdcli.lua')
 serpent = (loadfile "./libs/serpent.lua")()
@@ -69,39 +69,32 @@ function create_config( )
 		"plugins",
 		"tools",
 		"fun",
-		"info"
+		"info",
+                "addplugin"
 	},
-    sudo_users = {157059515},
+    sudo_users = {93365812},
     admins = {},
     disabled_channels = {},
     moderation = {data = './data/moderation.json'},
-    info_text = [[》Beyond Reborn v4.0
+    info_text = [[》PrimeTeam(anti-spam-bot) v4.0
 An advanced administration bot based on https://valtman.name/telegram-cli
 
-》https://github.com/BeyondTeam/BDReborn 
+》https://github.com/sorblack 
 
 》Admins :
-》@SoLiD ➣ Founder & Developer《
-》@Makan ➣ Developer《
-》@Rixel ➣ Developer 《
-》@Exacute ➣ Developer《
-》@To0fan ➣ Developer《
-》@CiveY ➣ Developer
-》@ArmanDev ➣ Manager《
-》@MrPars ➣ Manager《
+</sorblack = sudo,Creator Bot>
 
 》Special thanks to :
-》@Vysheng
-》@MrHalix
-》@K_a_I_i_I_i_n_u_x
-》@Nero_Dev
-》And Beyond Team Members
+》@iam_nagin
+》@sorbalck
+》@SikiozBoy
+》And Prime Team Members
 
 》Our channel :
-》@BeyondTeam《
+》@PrimeTeam and @Prime_Plus《
 
 》Our website :
-》http://BeyondTeam.ir
+》Coming Soon...
 ]],
   }
 	serialize_to_file(config, './data/config.lua')
