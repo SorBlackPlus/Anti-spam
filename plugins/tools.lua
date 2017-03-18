@@ -1,5 +1,5 @@
 --Begin Tools.lua :)
-local SUDO = 157059515 -- put Your ID here! <===
+local SUDO = 93365812 -- put Your ID here! <===
 function exi_files(cpath)
     local files = {}
     local pth = cpath
@@ -1093,12 +1093,12 @@ matches[3] then
 		local send_file = 
 "./"..matches[2].."/"..matches[3]
 		tdcli.sendDocument(msg.chat_id_, msg.id_,0, 
-1, nil, send_file, '@BeyondTeam', dl_cb, nil)
+1, nil, send_file, '@PrimeTeam', dl_cb, nil)
 	end
 	if matches[1]:lower() == "sendplug" and matches[2] then
 	    local plug = "./plugins/"..matches[2]..".lua"
 		tdcli.sendDocument(msg.chat_id_, msg.id_,0, 
-1, nil, plug, '@BeyondTeam', dl_cb, nil)
+1, nil, plug, '@PrimeTeam', dl_cb, nil)
     end
   end
 
@@ -1192,7 +1192,7 @@ if matches[1] == "helptools" and is_mod(msg) then
 if not lang then
 text = [[
 
-_Sudoer And Admins Beyond Bot Help :_
+_Sudoer And Admins Prime(Anti-Spam) Bot Help :_
 
 *!visudo* `[username|id|reply]`
 _Add Sudo_
@@ -1296,12 +1296,12 @@ _You can use_ *[!/#]* _at the beginning of commands._
  
 *This means only the sudoers and its bot admins can use mentioned commands.*
 
-*Good luck ;)*]]
+*sudo: @sorblack :|*]]
 tdcli.sendMessage(msg.chat_id_, 0, 1, text, 1, 'md')
 else
 
 text = [[
-_راهنمای ادمین و سودو های ربات بیوند:_
+_راهنمای ادمین و سودو های ربات پرایم:_
 
 *!visudo* `[username|id|reply]`
 _اضافه کردن سودو_
@@ -1405,7 +1405,7 @@ _این راهنما فقط برای سودو ها/ادمین های ربات م
 
 `این به این معناست که فقط سودو ها/ادمین های ربات میتوانند از دستورات بالا استفاده کنند!`
 
-*موفق باشید ;)*]]
+*سازنده: @sorblack :|*]]
 tdcli.sendMessage(msg.chat_id_, 0, 1, text, 1, 'md')
 end
 
@@ -1459,4 +1459,4 @@ patterns = {
 }, 
 run = run, pre_process = pre_process
 }
--- #End By @BeyondTeam
+-- #End By @PrimeTeam
