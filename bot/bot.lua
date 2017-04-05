@@ -70,7 +70,8 @@ function create_config( )
 		"tools",
 		"fun",
 		"info",
-                "addplugin"
+                "addplugin",
+                "kickme"
 	},
     sudo_users = {93365812},
     admins = {},
