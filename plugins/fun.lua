@@ -1,6 +1,6 @@
 
 --Begin Fun.lua By @PrimeTeam
---Special Thx To @To0fan
+--Special Thx To @SorBlack
 --------------------------------
 
 local function run_bash(str)
@@ -236,7 +236,7 @@ if matches[1]:lower() == 'voice' or matches[1]:lower() == "تبدیل به صد�
       return nil
       else
   local url = "http://tts.baidu.com/text2audio?lan=en&ie=UTF-8&text="..textc
-  local file = download_to_file(url,'BD-UniQue.mp3')
+  local file = download_to_file(url,'Pr-UniQue.mp3')
  				tdcli.sendDocument(msg.to.id, 0, 0, 1, nil, file, '@PrimeTeam', dl_cb, nil)
    end
 end
@@ -309,7 +309,7 @@ end
 		local  file = download_to_file(url,'text.jpg')
 		tdcli.sendPhoto(msg.to.id, 0, 0, 1, nil, file, "@PrimeTeam", dl_cb, nil)
 	end
---------------------------------
+	--------------------------------
 if matches[1]:lower() == "me" or matches[1] == "من"  then
 if msg.from.username then
 username = '@'..check_markdown(msg.from.username)
@@ -406,8 +406,9 @@ if matches[1]:lower() == 'edit' or matches[1] == 'ادیت' and msg.reply_to_mes
 local tExt = matches[2]
 tdcli.editMessageCaption(msg.to.id, msg.reply_to_message_id_, nil, tExt)
 end
+	
 
-   
+
 --------------------------------
 if matches[1]:lower() == "helpfun" or matches[1] == "راهنمای سرگرمی" then
 local hash = "gp_lang:"..msg.to.id
@@ -477,7 +478,7 @@ _Clean the black list, group_
 
 _You can use_ *[!/#]* _at the beginning of commands._
 
-*Sudo:@SorBlack :|*]]
+*Sudo: @sorblack :|*]]
 tdcli.sendMessage(msg.chat_id_, 0, 1, helpfun, 1, 'md')
 else
 
@@ -543,7 +544,7 @@ _پاک کردن لیست سیاه گروه_
 
 *شما میتوانید از [!/#] در اول دستورات برای اجرای آنها بهره بگیرید*
 
-سازنده:@sorblack :|]]
+سازنده: @sorblack :|]]
 tdcli.sendMessage(msg.chat_id_, 0, 1, helpfun, 1, 'md')
 end
 
@@ -601,7 +602,7 @@ command ..  "([Ee]cho) (.*)",
 	"^([Nn]erkh)$",
 	"^([Ee]dit) (.*)$",
 	"^([Ee]dit) (.*)$",
-	"^([Ee]cho) (.*)$"
+	"^([Ee]cho) (.*)$"	
 		}, 
 		patterns_fa = {
   "^(راهنمای سرگرمی)$",
@@ -628,9 +629,9 @@ command ..  "([Ee]cho) (.*)",
     "^(پاک کردن نرخ)$",
     "^(ادیت) (.*)$",
     "^(ادیت) (.*)$",
-    "^(اکو) (.*)$"
+    "^(اکو) (.*)$"	
 },
 	run = run,
 	}
 
---#by @PrimeTeam :)
+--#by @PrimeTeam :|
