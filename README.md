@@ -1,4 +1,4 @@
-# [Anti-Spam-Pirme](https://t.me/PrimeTeam)
+# [Anti-Spam-Pirme V.6](https://t.me/PrimeTeam)
 
 **An advanced and powerful administration bot based on NEW TG-CLI
 and debuged By # [@SorBlack](Https://t.me/SorBlack)
@@ -26,11 +26,19 @@ chmod +x Prime.sh
 ./Prime.sh install
 ./Prime.sh 
 # Enter a phone number & confirmation code.
+-----------------------------
+# For Auto Launch:
+chmod 777 autopr.sh
+screen ./autopr.sh
 ```
 ### One command
 To install everything in one command, use:
 ```sh
 cd $HOME && git clone https://github.com/SorBlackPlus/Anti-spam.git && cd Anti-spam && chmod +x Prime.sh && ./Prime.sh install && ./Prime.sh
+
+OR
+
+cd $HOME && git clone https://github.com/SorBlackPlus/Anti-spam.git && cd Anti-spam && chmod +x Prime.sh && ./Prime.sh install && chmod 777 autopr.sh && screen ./autopr.sh
 ```
 
 * * *
