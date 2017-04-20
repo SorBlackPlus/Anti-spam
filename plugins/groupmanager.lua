@@ -1507,6 +1507,180 @@ end
 end
 end
 
+---------------Lock badword-------------------
+local function lock_badword(msg, data, target) 
+local hash = "gp_lang:"..msg.to.id
+local lang = redis:get(hash)
+if not is_mod(msg) then
+if not lang then
+ return "_You're Not_ *Moderator*"
+else
+ return "شما مدیر گروه نمیباشید"
+end
+end
+
+local lock_badword = data[tostring(target)]["settings"]["lock_badword"] 
+if lock_badword == "yes" then
+if not lang then
+ return "*badword* _Posting Is Already Locked_"
+elseif lang then
+ return "ارسال کلمات فحش در گروه هم اکنون ممنوع است"
+end
+else
+ data[tostring(target)]["settings"]["lock_badword"] = "yes"
+save_data(_config.moderation.data, data) 
+if not lang then
+ return "*badword* _Posting Has Been Locked_"
+else
+ return "ارسال کلمات فحش در گروه ممنوع شد"
+end
+end
+end
+
+local function unlock_badword(msg, data, target)
+local hash = "gp_lang:"..msg.to.id
+local lang = redis:get(hash)
+ if not is_mod(msg) then
+if not lang then
+return "_You're Not_ *Moderator*"
+else
+ return "شما مدیر گروه نمیباشید"
+end 
+end
+
+local lock_badword = data[tostring(target)]["settings"]["lock_badword"]
+ if lock_badword == "no" then
+if not lang then
+return "*badword* _Posting Is Not Locked_" 
+elseif lang then
+return "ارسال کلمات فحش در گروه ممنوع نمیباشد"
+end
+else 
+data[tostring(target)]["settings"]["lock_badword"] = "no" save_data(_config.moderation.data, data) 
+if not lang then
+return "*badword* _Posting Has Been Unlocked_" 
+else
+return "ارسال کلمات فحش در گروه آزاد شد"
+end
+end
+end
+
+---------------Lock Username-------------------
+local function lock_username(msg, data, target) 
+local hash = "gp_lang:"..msg.to.id
+local lang = redis:get(hash)
+if not is_mod(msg) then
+if not lang then
+ return "_You're Not_ *Moderator*"
+else
+ return "شما مدیر گروه نمیباشید"
+end
+end
+
+local lock_username = data[tostring(target)]["settings"]["lock_username"] 
+if lock_username == "yes" then
+if not lang then
+ return "*Username* _Posting Is Already Locked_"
+elseif lang then
+ return "ارسال کلمات یوزرنیم در گروه هم اکنون ممنوع است"
+end
+else
+ data[tostring(target)]["settings"]["lock_username"] = "yes"
+save_data(_config.moderation.data, data) 
+if not lang then
+ return "*Username* _Posting Has Been Locked_"
+else
+ return "ارسال کلمات یوزرنیم در گروه ممنوع شد"
+end
+end
+end
+
+local function unlock_username(msg, data, target)
+local hash = "gp_lang:"..msg.to.id
+local lang = redis:get(hash)
+ if not is_mod(msg) then
+if not lang then
+return "_You're Not_ *Moderator*"
+else
+ return "شما مدیر گروه نمیباشید"
+end 
+end
+
+local lock_username = data[tostring(target)]["settings"]["lock_username"]
+ if lock_username == "no" then
+if not lang then
+return "*Username* _Posting Is Not Locked_" 
+elseif lang then
+return "ارسال کلمات یوزرنیم در گروه ممنوع نمیباشد"
+end
+else 
+data[tostring(target)]["settings"]["lock_username"] = "no" save_data(_config.moderation.data, data) 
+if not lang then
+return "*Username* _Posting Has Been Unlocked_" 
+else
+return "ارسال کلمات یوزرنیم در گروه آزاد شد"
+end
+end
+end
+
+--------------Lock English-------------------
+local function lock_english(msg, data, target) 
+local hash = "gp_lang:"..msg.to.id
+local lang = redis:get(hash)
+if not is_mod(msg) then
+if not lang then
+ return "_You're Not_ *Moderator*"
+else
+ return "شما مدیر گروه نمیباشید"
+end
+end
+
+local lock_english = data[tostring(target)]["settings"]["lock_english"] 
+if lock_english == "yes" then
+if not lang then
+ return "*English* _Posting Is Already Locked_"
+elseif lang then
+ return "ارسال نوشته انگلیسی در گروه هم اکنون ممنوع است"
+end
+else
+ data[tostring(target)]["settings"]["lock_english"] = "yes"
+save_data(_config.moderation.data, data) 
+if not lang then
+ return "*English* _Posting Has Been Locked_"
+else
+ return "ارسال نوشته انگلیسی در گروه ممنوع شد"
+end
+end
+end
+
+local function unlock_english(msg, data, target)
+local hash = "gp_lang:"..msg.to.id
+local lang = redis:get(hash)
+ if not is_mod(msg) then
+if not lang then
+return "_You're Not_ *Moderator*"
+else
+ return "شما مدیر گروه نمیباشید"
+end 
+end
+
+local lock_english = data[tostring(target)]["settings"]["lock_english"]
+ if lock_english == "no" then
+if not lang then
+return "*English* _Posting Is Not Locked_" 
+elseif lang then
+return "ارسال نوشته انگلیسی در گروه ممنوع نمیباشد"
+end
+else 
+data[tostring(target)]["settings"]["lock_english"] = "no" save_data(_config.moderation.data, data) 
+if not lang then
+return "*English* _Posting Has Been Unlocked_" 
+else
+return "ارسال نوشته انگلیسی در گروه آزاد شد"
+end
+end
+end
+
 ---------------Lock Pin-------------------
 local function lock_pin(msg, data, target) 
 local hash = "gp_lang:"..msg.to.id
@@ -1675,6 +1849,23 @@ if data[tostring(target)]["settings"] then
  data[tostring(target)]["settings"]["lock_join"] = "no"		
  end
  end
+ if data[tostring(target)]["settings"] then		
+if not data[tostring(target)]["settings"]["lock_badword"] then			
+data[tostring(target)]["settings"]["lock_badword"] = "no"		
+end
+end
+
+if data[tostring(target)]["settings"] then		
+if not data[tostring(target)]["settings"]["lock_username"] then			
+data[tostring(target)]["settings"]["lock_username"] = "no"		
+end
+end
+
+if data[tostring(target)]["settings"] then		
+if not data[tostring(target)]["settings"]["lock_english"] then			
+data[tostring(target)]["settings"]["lock_english"] = "no"		
+end
+end
  local expire_date = ''
 local expi = redis:ttl('ExpireDate:'..msg.to.id)
 if expi == -1 then
@@ -1712,10 +1903,10 @@ local cmdss = redis:hget('group:'..msg.to.id..':cmd', 'bot')
 	end
 if not lang then
 local settings = data[tostring(target)]["settings"] 
-text = "*Group Settings:*\n_Lock edit :_ *"..settings.lock_edit.."*\n_Lock links :_ *"..settings.lock_link.."*\n_Lock tags :_ *"..settings.lock_tag.."*\n_Lock Join :_ *"..settings.lock_join.."*\n_Lock flood :_ *"..settings.lock_flood.."*\n_Lock spam :_ *"..settings.lock_spam.."*\n_Lock mention :_ *"..settings.lock_mention.."*\n_Lock arabic :_ *"..settings.lock_arabic.."*\n_Lock webpage :_ *"..settings.lock_webpage.."*\n_Lock markdown :_ *"..settings.lock_markdown.."*\n_Group welcome :_ *"..settings.welcome.."*\n_Lock pin message :_ *"..settings.lock_pin.."*\n_Bots protection :_ *"..settings.lock_bots.."*\n_Flood sensitivity :_ *"..NUM_MSG_MAX.."*\n_Character sensitivity :_ *"..SETCHAR.."*\n_Flood check time :_ *"..TIME_CHECK.."*\n*____________________*\n_Bot Commands :_ *"..cmdsss.."*\n_Expire Date :_ *"..expire_date.."*\n*Bot channel*: @PrimeTeam\n*Group Language* : *EN*"
+text = "*Group Settings:*\n_Lock edit :_ *"..settings.lock_edit.."*\n_Lock links :_ *"..settings.lock_link.."*\n_Lock tags :_ *"..settings.lock_tag.."*\n_Lock Join :_ *"..settings.lock_join.."*\n_Lock flood :_ *"..settings.lock_flood.."*\n_Lock spam :_ *"..settings.lock_spam.."*\n_Lock mention :_ *"..settings.lock_mention.."*\n_Lock arabic :_ *"..settings.lock_arabic.."*\n_Lock webpage :_ *"..settings.lock_webpage.."*\n_Lock markdown :_ *"..settings.lock_markdown.."*\n_Group welcome :_ *"..settings.welcome.."*\n_Lock pin message :_ *"..settings.lock_pin.."*\n_lock badword :_ *"..settings.lock_badword.."*\n_lock username :_ *"..settings.lock_username.."*\n_lock english :_ *"..settings.lock_english.."*\n_Bots protection :_ *"..settings.lock_bots.."*\n_Flood sensitivity :_ *"..NUM_MSG_MAX.."*\n_Character sensitivity :_ *"..SETCHAR.."*\n_Flood check time :_ *"..TIME_CHECK.."*\n*____________________*\n_Bot Commands :_ *"..cmdsss.."*\n_Expire Date :_ *"..expire_date.."*\n*Bot channel*: @PrimeTeam\n*Group Language* : *EN*"
 else
 local settings = data[tostring(target)]["settings"] 
- text = "*تنظیمات گروه:*\n_قفل ویرایش پیام :_ *"..settings.lock_edit.."*\n_قفل لینک :_ *"..settings.lock_link.."*\n_قفل ورود :_ *"..settings.lock_join.."*\n_قفل تگ :_ *"..settings.lock_tag.."*\n_قفل پیام مکرر :_ *"..settings.lock_flood.."*\n_قفل هرزنامه :_ *"..settings.lock_spam.."*\n_قفل فراخوانی :_ *"..settings.lock_mention.."*\n_قفل عربی :_ *"..settings.lock_arabic.."*\n_قفل صفحات وب :_ *"..settings.lock_webpage.."*\n_قفل فونت :_ *"..settings.lock_markdown.."*\n_پیام خوشآمد گویی :_ *"..settings.welcome.."*\n_قفل سنجاق کردن :_ *"..settings.lock_pin.."*\n_محافظت در برابر ربات ها :_ *"..settings.lock_bots.."*\n_حداکثر پیام مکرر :_ *"..NUM_MSG_MAX.."*\n_حداکثر حروف مجاز :_ *"..SETCHAR.."*\n_زمان بررسی پیام های مکرر :_ *"..TIME_CHECK.."*\n*____________________*\n_دستورات ربات :_ *"..cmdsss.."*\n_تاریخ انقضا :_ *"..expire_date.."*\n*کانال ما*: @PrimeTeam\n_زبان سوپرگروه_ : *فارسی*"
+ text = "*تنظیمات گروه:*\n_قفل ویرایش پیام :_ *"..settings.lock_edit.."*\n_قفل لینک :_ *"..settings.lock_link.."*\n_قفل ورود :_ *"..settings.lock_join.."*\n_قفل تگ :_ *"..settings.lock_tag.."*\n_قفل پیام مکرر :_ *"..settings.lock_flood.."*\n_قفل هرزنامه :_ *"..settings.lock_spam.."*\n_قفل فراخوانی :_ *"..settings.lock_mention.."*\n_قفل عربی :_ *"..settings.lock_arabic.."*\n_قفل صفحات وب :_ *"..settings.lock_webpage.."*\n_قفل فونت :_ *"..settings.lock_markdown.."*\n_پیام خوشآمد گویی :_ *"..settings.welcome.."*\n_قفل سنجاق کردن :_ *"..settings.lock_pin.."*\n_قفل فحش :_ *"..settings.lock_badword.."*\n_قفل یوزرنیم :_ *"..settings.lock_username.."*\n_قفل انگلیسی :_ *"..settings.lock_english.."*\n_محافظت در برابر ربات ها :_ *"..settings.lock_bots.."*\n_حداکثر پیام مکرر :_ *"..NUM_MSG_MAX.."*\n_حداکثر حروف مجاز :_ *"..SETCHAR.."*\n_زمان بررسی پیام های مکرر :_ *"..TIME_CHECK.."*\n*____________________*\n_دستورات ربات :_ *"..cmdsss.."*\n_تاریخ انقضا :_ *"..expire_date.."*\n*کانال ما*: @PrimeTeam\n_زبان سوپرگروه_ : *فارسی*"
 end
 text = string.gsub(text, 'yes', '✅')
 text = string.gsub(text, 'no', '❌')
@@ -3060,6 +3251,15 @@ end
 if matches[2] == "join" then
 return lock_join(msg, data, target)
 end
+if matches[2] == "badword" then
+return lock_badword(msg, data, target)
+end
+if matches[2] == "username" then
+return lock_username(msg, data, target)
+end
+if matches[2] == "english" then
+return lock_english(msg, data, target)
+end
 if matches[2] == 'cmds' then
 			redis:hset('group:'..msg.to.id..':cmd', 'bot', 'moderator')
 			return 'cmds has been locked for member'
@@ -3100,6 +3300,15 @@ return lock_pin(msg, data, target)
 end
 if matches[2] == "ورود" then
 return lock_join(msg, data, target)
+end
+if matches[2] == "فحش" then
+return lock_badword(msg, data, target)
+end
+if matches[2] == "یوزرنیم" then
+return lock_username(msg, data, target)
+end
+if matches[2] == "انگلیسی" then
+return lock_english(msg, data, target)
 end
 if matches[2] == 'دستورات' then
 			redis:hset('group:'..msg.to.id..':cmd', 'bot', 'moderator')
@@ -3146,6 +3355,15 @@ end
 if matches[2] == "join" then
 return unlock_join(msg, data, target)
 end
+if matches[2] == "badword" then
+return unlock_badword(msg, data, target)
+end
+if matches[2] == "username" then
+return unlock_username(msg, data, target)
+end
+if matches[2] == "english" then
+return unlock_english(msg, data, target)
+end
 if matches[2] == 'cmds' then
 			redis:del('group:'..msg.to.id..':cmd')
 			return 'cmds has been unlocked for member'
@@ -3186,6 +3404,15 @@ return unlock_pin(msg, data, target)
 end
 if matches[2] == "ورود" then
 return unlock_join(msg, data, target)
+end
+if matches[2] == "فحش" then
+return unlock_badword(msg, data, target)
+end
+if matches[2] == "یوزرنیم" then
+return unlock_username(msg, data, target)
+end
+if matches[2] == "انگلیسی" then
+return unlock_english(msg, data, target)
 end
 if matches[2] == 'دستورات' then
 			redis:del('group:'..msg.to.id..':cmd')
@@ -3899,6 +4126,239 @@ if not lang then
 		end
 		end
   end
+
+if (matches[1]:lower() == "help" or matches[1] == 'راهنما') and is_mod(msg) then
+if not lang then
+text = [[
+*Beyond Bot Commands:*
+*!setmanager* `[username|id|reply]` 
+_Add User To Group Admins(CreatorBot)_
+*!Remmanager* `[username|id|reply]` 
+ _Remove User From Owner List(CreatorBot)_
+*!setowner* `[username|id|reply]` 
+_Set Group Owner(Multi Owner)_
+*!remowner* `[username|id|reply]` 
+ _Remove User From Owner List_
+*!promote* `[username|id|reply]` 
+_Promote User To Group Admin_
+*!demote* `[username|id|reply]` 
+_Demote User From Group Admins List_
+*!setflood* `[2-50]`
+_Set Flooding Number_
+*!silent* `[username|id|reply]` 
+_Silent User From Group_
+*!unsilent* `[username|id|reply]` 
+_Unsilent User From Group_
+*!kick* `[username|id|reply]` 
+_Kick User From Group_
+*!ban* `[username|id|reply]` 
+_Ban User From Group_
+*!unban* `[username|id|reply]` 
+_UnBan User From Group_
+*!res* `[username]`
+_Show User ID_
+*!id* `[reply]`
+_Show User ID_
+*!whois* `[id]`
+_Show User's Username And Name_
+*!lock* `[link | join | tag | edit | arabic | webpage | bots | spam | flood | markdown | mention | pin | cmds | english | username | badword]`
+_If This Actions Lock, Bot Check Actions And Delete Them_
+*!unlock* `[link | join | tag | edit | arabic | webpage | bots | spam | flood | markdown | mention | pin | cmds | english | username | badword]`
+_If This Actions Unlock, Bot Not Delete Them_
+*!mute* `[all | gif | photo | document | sticker | keyboard | video | text | forward | location | audio | voice | contact | all]`
+_If This Actions Lock, Bot Check Actions And Delete Them_
+*!mute* `(hour) (minute) (seconds)`
+_Mute group at this time_ 
+*!mutehours* `(number)`
+_Mute group at this time_ 
+*!muteminutes* `(number)`
+_Mute group at this time_ 
+*!muteseconds* `(number)`
+_Mute group at this time_
+*!unmute* `[all | gif | photo | document | sticker | keyboard | video | text | forward | location | audio | voice | contact | all]`
+_If This Actions Unlock, Bot Not Delete Them_
+*!set*`[rules | name | link | about | welcome]`
+_Bot Set Them_
+*!clean* `[bans | mods | bots | rules | about | silentlist | filtelist | welcome]`   
+_Bot Clean Them_
+*!filter* `[word]`
+_Word filter_
+*!unfilter* `[word]`
+_Word unfilter_
+*!pin* `[reply]`
+_Pin Your Message_
+*!unpin* 
+_Unpin Pinned Message_
+*!welcome enable/disable*
+_Enable Or Disable Group Welcome_
+*!settings*
+_Show Group Settings_
+*!cmds* `[member | moderator | owner]`	
+_set cmd_
+*!mutelist*
+_Show Mutes List_
+*!whitelist* `[+ | -]`	
+_Add User To White List_
+*!silentlist*
+_Show Silented Users List_
+*!filterlist*
+_Show Filtered Words List_
+*!banlist*
+_Show Banned Users List_
+*!ownerlist*
+_Show Group Owners List_ 
+*!whitelist*
+_Show Group whitelist List_
+*!modlist* 
+_Show Group Moderators List_
+*!rules*
+_Show Group Rules_
+*!about*
+_Show Group Description_
+*!id*
+_Show Your And Chat ID_
+*!gpinfo*
+_Show Group Information_
+*!newlink*
+_Create A New Link_
+*!newlink pv*
+_Create A New Link The Pv_
+*!link*
+_Show Group Link_
+*!link pv*
+_Send Group Link In Your Private Message_
+*!setlang fa*
+_Set Persian Language_
+*!setwelcome [text]*
+_set Welcome Message_
+*!helptools*
+_Show Tools Help_
+*!helpfun*
+_Show Fun Help_
+*!helpmute*
+_Show mute Help_
+_You Can Use_ *[!/#]* _To Run The Commands_
+_This Help List Only For_ *Moderators/Owners!*
+_Its Means, Only Group_ *Moderators/Owners* _Can Use It!_
+*Good luck ;)*]]
+
+elseif lang then
+
+text = [[
+*دستورات ربات بیوند:*
+*ادمین گروه* `[username|id|reply]` 
+_افزودن ادمین گروه(درصورت اینکه ربات سازنده  گروه)_
+*حذف ادمین گروه* `[username|id|reply]` 
+_حذف ادمین گروه(درصورت اینکه ربات سازنده  گروه)_
+*مالک* `[username|id|reply]` 
+_انتخاب مالک گروه(قابل انتخاب چند مالک)_
+*حذف مالک* `[username|id|reply]` 
+ _حذف کردن فرد از فهرست مالکان گروه_
+*مدیر* `[username|id|reply]` 
+_ارتقا مقام کاربر به مدیر گروه_
+*حذف مدیر* `[username|id|reply]` 
+_تنزیل مقام مدیر به کاربر_
+*تنظیم پیام مکرر* `[2-50]`
+_تنظیم حداکثر تعداد پیام مکرر_
+*سکوت* `[username|id|reply]` 
+_بیصدا کردن کاربر در گروه_
+*!حذف سکوت* `[username|id|reply]` 
+_در آوردن کاربر از حالت بیصدا در گروه_
+*!اخراج* `[username|id|reply]` 
+_حذف کاربر از گروه_
+*!بن* `[username|id|reply]` 
+_مسدود کردن کاربر از گروه_
+*!حذف بن* `[username|id|reply]` 
+_در آوردن از حالت مسدودیت کاربر از گروه_
+*کاربری* `[username]`
+_نمایش شناسه کاربر_
+*ایدی* `[reply]`
+_نمایش شناسه کاربر_
+*شناسه* `[id]`
+_نمایش نام کاربر, نام کاربری و اطلاعات حساب_
+*قفل* `[لینک | ورود | تگ | ویرایش | عربی | وب | ربات |هرزنامه | پیام مکرر | فونت | فراخوانی | سنجاق| فحش | یوزرنیم | انگلیسی]`
+_در صورت قفل بودن فعالیت ها, ربات آنهارا حذف خواهد کرد_
+*باز* `[لینک | ورود | تگ | ویرایش | عربی | وب | ربات |هرزنامه | پیام مکرر | فونت | فراخوانی | سنجاق | فحش | یوزرنیم | انگلیسی]`
+_در صورت قفل نبودن فعالیت ها, ربات آنهارا حذف نخواهد کرد_
+*بیصدا* `[همه | تصاویر متحرک | عکس | اسناد | برچسب | صفحه کلید | فیلم | متن | نقل قول | موقعیت | اهنگ | صدا | مخاطب | کیبورد شیشه ای|بازی|خدمات تلگرام|]`
+_در صورت بیصدد بودن فعالیت ها, ربات آنهارا حذف خواهد کرد_
+*بیصدا* `(ساعت) (دقیقه) (ثانیه)`
+_بیصدا کردن گروه با ساعت و دقیقه و ثانیه_ 
+*ساعت بیصدا* `(عدد)`
+_بیصدا کردن گروه در ساعت_ 
+*دقیقه بیصدا* `(عدد)`
+_بیصدا کردن گروه در دقیقه_ 
+*ثانیه بیصدا* `(عدد)`
+_بیصدا کردن گروه در ثانیه_ 
+*باصدا* `[همه | تصاویر متحرک | عکس | اسناد | برچسب | صفحه کلید | فیلم | متن | نقل قول | موقعیت | اهنگ | صدا | مخاطب | کیبورد شیشه ای|بازی|خدمات تلگرام|]`
+_در صورت بیصدا نبودن فعالیت ها, ربات آنهارا حذف نخواهد کرد_
+*تنظیم*`[قوانین | نام | لینک | درباره | خوشآمد]`
+_ربات آنهارا ثبت خواهد کرد_
+*پاک کردن* `[بن | مدیران | ربات | قوانین | درباره | لیست سکوت | خوشآمد]`   
+_ربات آنهارا پاک خواهد کرد_
+*لیست سفید* `[+|-]`
+_افزودن افراد به لیست سفید_
+*فیلتر* `[کلمه]`
+_فیلتر‌کلمه مورد نظر_
+*حذف فیلتر* `[کلمه]`
+_ازاد کردن کلمه مورد نظر_
+*سنجاق* `[reply]`
+_ربات پیام شمارا در گروه سنجاق خواهد کرد_
+*حذف سنجاق* 
+_ربات پیام سنجاق شده در گروه را حذف خواهد کرد_
+*!خوشآمد فعال/غیرفعال*
+_فعال یا غیرفعال کردن خوشآمد گویی_
+*تنظیمات*
+_نمایش تنظیمات گروه_
+*دستورات* `[کاربر | مدیر | مالک]`	
+_نتخاب کردن قفل cmd بر چه مدیریتی_
+*لیست بیصدا*
+_نمایش فهرست بیصدا های گروه_
+*لیست بیصدا*
+_نمایش فهرست افراد بیصدا_
+*فیلتر لیست*
+_نمایش لیست کلمات فیلتر شده_
+*لیست سفید*
+_نمایش افراد سفید شده از گروه_
+*لیست بن*
+_نمایش افراد مسدود شده از گروه_
+*لیست مالکان*
+_نمایش فهرست مالکان گروه_ 
+*لیست مدیران* 
+_نمایش فهرست مدیران گروه_
+*قوانین*
+_نمایش قوانین گروه_
+*درباره*
+_نمایش درباره گروه_
+*ایدی*
+_نمایش شناسه شما و گروه_
+*اطلاعات گروه*
+_نمایش اطلاعات گروه_
+*لینک جدید*
+_ساخت لینک جدید_
+*لینک جدید خصوصی*
+_ساخت لینک جدید در پیوی_
+*لینک*
+_نمایش لینک گروه_
+*لینک خصوصی*
+_ارسال لینک گروه به چت خصوصی شما_
+*زبان انگلیسی*
+_تنظیم زبان انگلیسی_
+*!تنظیم خوشآمد [متن]*
+_ثبت پیام خوش آمد گویی_
+*!راهنما ابزار*
+_نمایش راهنمای ابزار_
+*!راهنما سرگرمی*
+_نمایش راهنمای سرگرمی_
+*!راهنما بیصدا*
+_نمایش دستورات بیصدا های گروه_
+
+_این راهنما فقط برای مدیران/مالکان گروه میباشد!
+این به این معناست که فقط مدیران/مالکان گروه میتوانند از دستورات بالا استفاده کنند!_
+*موفق باشید ;)*]]
+end
+return text
+end
 --------------------- Welcome -----------------------
 	if (matches[1]:lower() == "welcome" or matches[1] == 'خوشآمد') and is_mod(msg) then
 	if not lang then
@@ -4246,4 +4706,4 @@ run=run,
 pre_process = pre_process
 }
 
--- ##By @PrimeTeam
+-- ## @PrimeTeam
