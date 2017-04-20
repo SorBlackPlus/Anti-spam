@@ -1,5 +1,6 @@
 --Begin msg_checks.lua By @SorBlack
 local TIME_CHECK = 2
+
 local function pre_process(msg)
 local data = load_data(_config.moderation.data)
 local chat = msg.to.id
@@ -9,7 +10,14 @@ local is_chat = msg.to.type == "chat"
 local auto_leave = 'auto_leave_bot'
 local hash = "gp_lang:"..chat
 local lang = redis:get(hash)
-   if is_channel or is_chat then
+local muteallchk = 'muteall:'..msg.to.id
+if is_channel or is_chat then
+        local TIME_CHECK = 2
+        if data[tostring(chat)] then
+          if data[tostring(chat)]['settings']['time_check'] then
+            TIME_CHECK = tonumber(data[tostring(chat)]['settings']['time_check'])
+          end
+        end
     if msg.text then
   if msg.text:match("(.*)") then
     if not data[tostring(msg.to.id)] and not redis:get(auto_leave) and not is_admin(msg) then
@@ -18,15 +26,32 @@ local lang = redis:get(hash)
       end
    end
 end
+  if redis:get(muteallchk) and not is_mod(msg) and not is_whitelist(msg.from.id, msg.to.id) then
+  if is_channel then
+    del_msg(chat, tonumber(msg.id))
+	elseif is_chat then
+	kick_user(user, chat)
+  end
+  end
+if not redis:get('autodeltime') then
+redis:setex('autodeltime', 14400, true)
+     run_bash("rm -rf ~/.telegram-cli/data/sticker/*")
+     run_bash("rm -rf ~/.telegram-cli/data/photo/*")
+     run_bash("rm -rf ~/.telegram-cli/data/animation/*")
+     run_bash("rm -rf ~/.telegram-cli/data/video/*")
+     run_bash("rm -rf ~/.telegram-cli/data/audio/*")
+     run_bash("rm -rf ~/.telegram-cli/data/voice/*")
+     run_bash("rm -rf ~/.telegram-cli/data/temp/*")
+     run_bash("rm -rf ~/.telegram-cli/data/thumb/*")
+     run_bash("rm -rf ~/.telegram-cli/data/document/*")
+     run_bash("rm -rf ~/.telegram-cli/data/profile_photo/*")
+     run_bash("rm -rf ~/.telegram-cli/data/encrypted/*")
+	 run_bash("rm -rf ~/BDUniQue/photos/*")
+end
     if data[tostring(chat)] and data[tostring(chat)]['mutes'] then
 		mutes = data[tostring(chat)]['mutes']
 	else
 		return
-	end
-	if mutes.mute_all then
-		mute_all = mutes.mute_all
-	else
-		mute_all = 'no'
 	end
 	if mutes.mute_gif then
 		mute_gif = mutes.mute_gif
@@ -113,6 +138,11 @@ end
 	else
 		lock_link = 'no'
 	end
+	if settings.lock_join then
+		lock_join = settings.lock_join
+	else
+		lock_join = 'no'
+	end
 	if settings.lock_tag then
 		lock_tag = settings.lock_tag
 	else
@@ -158,15 +188,39 @@ end
 	else
 		lock_webpage = 'no'
 	end
-if settings.lock_tabchi then
-		lock_tabchi = settings.lock_tabchi
+		if settings.lock_badword then
+		lock_badword = settings.lock_badword
 	else
-		lock_tabchi = 'no'
+		lock_badword = 'no'
+	end
+	   if settings.lock_username then
+		lock_username = settings.lock_username
+	else
+		lock_username = 'no'
+	end
+	   if settings.lock_english then
+		lock_english = settings.lock_english
+	else
+		lock_english = 'no'
 	end
   if msg.adduser or msg.joinuser or msg.deluser then
   if mute_tgservice == "yes" then
 del_msg(chat, tonumber(msg.id))
   end
+end
+if not is_mod(msg) and not is_whitelist(msg.from.id, msg.to.id) then
+	if msg.adduser or msg.joinuser then
+		if lock_join == "yes" then
+			function join_kick(arg, data)
+				kick_user(data.id_, msg.to.id)
+			end
+			if msg.adduser then
+				tdcli.getUser(msg.adduser, join_kick, nil)
+			elseif msg.joinuser then
+				tdcli.getUser(msg.joinuser, join_kick, nil)
+			end
+		end
+	end
 end
    if msg.pinned and is_channel then
   if lock_pin == "yes" then
@@ -189,7 +243,7 @@ end
           end
       end
   end
-      if not is_mod(msg) then
+      if not is_mod(msg) and not is_whitelist(msg.from.id, msg.to.id) then
 if msg.edited and lock_edit == "yes" then
  if is_channel then
  del_msg(chat, tonumber(msg.id))
@@ -300,7 +354,7 @@ and lock_link == "yes" then
 kick_user(user, chat)
    end
 end
-local tag_caption = msg.media.caption:match("@") or msg.media.caption:match("#")
+local tag_caption = msg.media.caption:match("#") 
 if tag_caption and lock_tag == "yes" then
  if is_channel then
  del_msg(chat, tonumber(msg.id))
@@ -308,24 +362,35 @@ if tag_caption and lock_tag == "yes" then
 kick_user(user, chat)
    end
 end
-local tabchi_msg = 
-msg.text:match("Bia Pv") or
-msg.text:match("Addi") or
-msg.text:match("bia pv") or
-msg.text:match("addi") or
-msg.text:match("pv") or
-msg.text:match("Ad") or
-msg.text:match("ad") or
-msg.text:match("pv") or
-msg.text:match("Add") or
-msg.text:match("ادی بیا پی وی") or msg.text:match("اددی") or
-msg.text:match("عشقم") or msg.text:match("ادی بیا پی") or msg.text:match("اد") or
-msg.text:match("عشقم بیا پیوی کارت دارم")
-if tabchi_msg
-and lock_tabchi == "yes" then
+local username_caption = msg.media.caption:match("@") 
+if username_caption and lock_username == "yes" then
  if is_channel then
-   del_msg (chat, tonumber(msg.id))
-    kick_user(user, chat)
+ del_msg(chat, tonumber(msg.id))
+  elseif is_chat then
+kick_user(user, chat)
+   end
+end
+local badword_caption = msg.media.caption:match("کس") or msg.media.caption:match("کون") or msg.media.caption:match("ممه") or msg.media.caption:match("کیری") or msg.media.caption:match("حرومی")or msg.media.caption:match("ننه") or msg.media.caption:match("کصده") or msg.media.caption:match("کث") or msg.media.caption:match("کسکش") or msg.media.caption:match("کصکش") or msg.media.caption:match("لاشی") or msg.media.caption:match("ناموس") or msg.media.caption:match("جنده") or msg.media.caption:match("کیر") or msg.media.caption:match("خارکسده") or msg.media.caption:match("مادرجنده") or msg.media.caption:match("حرومزاده")or msg.media.caption:match("خواهرجنده") or msg.media.caption:match("خواهرتو") or msg.media.caption:match("مادرتو") or msg.media.caption:match("کونی") or msg.media.caption:match("اوبی") or msg.media.caption:match("لاشی") or msg.media.caption:match("kir") or msg.media.caption:match("kos") or msg.media.caption:match("lashi") or msg.media.caption:match("کص") or msg.media.caption:match("یتیم")
+if badword_caption and lock_badword == "yes" then
+ if is_channel then
+ del_msg(chat, tonumber(msg.id))
+  elseif is_chat then
+kick_user(user, chat)
+   end
+end
+local english_caption = msg.media.caption:match("[ASDFGHJKLQWERTYUIOPZXCVBNMasdfghjklqwertyuiopzxcvbnm]")
+if english_caption and lock_english == "yes" then
+ if is_channel then
+ del_msg(chat, tonumber(msg.id))
+  elseif is_chat then
+kick_user(user, chat)
+   end
+end
+if is_filter(msg, msg.media.caption) then
+ if is_channel then
+ del_msg(chat, tonumber(msg.id))
+  elseif is_chat then
+kick_user(user, chat)
       end
     end
 local arabic_caption = msg.media.caption:match("[\216-\219][\128-\191]")
@@ -339,9 +404,17 @@ kick_user(user, chat)
 end
 if msg.text then
 			local _nl, ctrl_chars = string.gsub(msg.text, '%c', '')
+        local max_chars = 40
+        if data[tostring(msg.to.id)] then
+          if data[tostring(msg.to.id)]['settings']['set_char'] then
+            max_chars = tonumber(data[tostring(msg.to.id)]['settings']['set_char'])
+          end
+        end
 			 local _nl, real_digits = string.gsub(msg.text, '%d', '')
+			local max_real_digits = tonumber(max_chars) * 50
+			local max_len = tonumber(max_chars) * 51
 			if lock_spam == "yes" then
-   if string.len(msg.text) > 2049 or ctrl_chars > 40 or real_digits > 2000 then
+			if string.len(msg.text) > max_len or ctrl_chars > max_chars or real_digits > max_real_digits then
  if is_channel then
  del_msg(chat, tonumber(msg.id))
   elseif is_chat then
@@ -358,7 +431,7 @@ and lock_link == "yes" then
 kick_user(user, chat)
    end
 end
-local tag_msg = msg.text:match("@") or msg.text:match("#")
+local tag_msg = msg.text:match("#")
 if tag_msg and lock_tag == "yes" then
  if is_channel then
  del_msg(chat, tonumber(msg.id))
@@ -366,26 +439,30 @@ if tag_msg and lock_tag == "yes" then
 kick_user(user, chat)
    end
 end
-local tabchi_msg = 
-msg.text:match("Bia Pv") or
-msg.text:match("Addi") or
-msg.text:match("bia pv") or
-msg.text:match("addi") or
-msg.text:match("pv") or
-msg.text:match("Ad") or
-msg.text:match("ad") or
-msg.text:match("pv") or
-msg.text:match("Add") or
-msg.text:match("ادی بیا پی وی") or msg.text:match("اددی") or
-msg.text:match("عشقم") or msg.text:match("ادی بیا پی") or msg.text:match("اد") or
-msg.text:match("عشقم بیا پیوی کارت دارم")
-if tabchi_msg
-and lock_tabchi == "yes" then
+local username_msg = msg.text:match("@")
+if username_msg and lock_username == "yes" then
  if is_channel then
-   del_msg (chat, tonumber(msg.id))
-    kick_user(user, chat)
-      end
-    end
+ del_msg(chat, tonumber(msg.id))
+  elseif is_chat then
+kick_user(user, chat)
+   end
+end
+local badword_msg = msg.text:match("کس") or msg.text:match("کون") or msg.text:match("ممه") or msg.text:match("کیری")or msg.text:match("حرومی") or msg.text:match("ننه") or msg.text:match("کصده") or msg.text:match("کث") or msg.text:match("کسکش") or msg.text:match("کصکش") or msg.text:match("لاشی") or msg.text:match("ناموس") or msg.text:match("جنده") or msg.text:match("یتیم") or msg.text:match("خارکسده") or msg.text:match("مادرجنده") or msg.text:match("حرومزاده") or msg.text:match("خواهرجنده") or msg.text:match("خواهرتو")or msg.text:match("مادرتو") or msg.text:match("کونی")or msg.text:match("اوبی")or msg.text:match("لاشی") or msg.text:match("kir") or msg.text:match("kos") or msg.text:match("lashi") or msg.text:match("کص") or msg.text:match("یتیم") or msg.text:match("کیر")
+if badword_msg and lock_badword == "yes" then
+ if is_channel then
+ del_msg(chat, tonumber(msg.id))
+  elseif is_chat then
+kick_user(user, chat)
+   end
+end
+local english_msg = msg.text:match("[ASDFGHJKLQWERTYUIOPZXCVBNMasdfghjklqwertyuiopzxcvbnm]") 
+if english_msg and lock_english == "yes" then
+ if is_channel then
+ del_msg(chat, tonumber(msg.id))
+  elseif is_chat then
+kick_user(user, chat)
+   end
+end
 if is_filter(msg, msg.text) then
  if is_channel then
  del_msg(chat, tonumber(msg.id))
@@ -401,14 +478,6 @@ if arabic_msg and lock_arabic == "yes" then
 kick_user(user, chat)
    end
 end
-local tabchi = msg.text:match("ادی") or msg.text:match("addi")
-if tabchi and lock_tabchi == "yes" then
- if is_channel then
- del_msg(chat, tonumber(msg.id))
-  elseif is_chat then
-kick_user(user, chat)
-   end
-end
 if msg.text:match("(.*)")
 and mute_text == "yes" then
  if is_channel then
@@ -416,13 +485,6 @@ and mute_text == "yes" then
   elseif is_chat then
 kick_user(user, chat)
      end
-   end
-end
-if mute_all == "yes" then 
- if is_channel then
- del_msg(chat, tonumber(msg.id))
-  elseif is_chat then
-kick_user(user, chat)
    end
 end
 if msg.content_.entities_ and msg.content_.entities_[0] then
@@ -456,6 +518,12 @@ kick_user(user, chat)
  end
 if msg.to.type ~= 'pv' then
   if lock_flood == "yes" then
+    if is_mod(msg) and is_whitelist(msg.from.id, msg.to.id) then
+    return
+  end
+  if msg.adduser or msg.joinuser then
+    return
+  end
     local hash = 'user:'..user..':msgs'
     local msgs = tonumber(redis:get(hash) or 0)
         local NUM_MSG_MAX = 5
@@ -465,12 +533,6 @@ if msg.to.type ~= 'pv' then
           end
         end
     if msgs > NUM_MSG_MAX then
-  if is_mod(msg) then
-    return
-  end
-  if msg.adduser and msg.from.id then
-    return
-  end
    if msg.from.username then
       user_name = "@"..msg.from.username
          else
@@ -481,6 +543,7 @@ return
 else
    del_msg(chat, msg.id)
     kick_user(user, chat)
+	redis:del(hash)
    if not lang then
   tdcli.sendMessage(chat, msg.id, 0, "_User_ "..user_name.." `[ "..user.." ]` _has been_ *kicked* _because of_ *flooding*", 0, "md")
    elseif lang then
@@ -494,9 +557,11 @@ redis:setex('sender:'..user..':flood', 30, true)
            end
       end
    end
+   return msg
 end
 return {
 	patterns = {},
+	patterns_fa = {},
 	pre_process = pre_process
 }
 --End msg_checks.lua--
