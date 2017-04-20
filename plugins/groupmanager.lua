@@ -4130,7 +4130,7 @@ if not lang then
 if (matches[1]:lower() == "help" or matches[1] == 'راهنما') and is_mod(msg) then
 if not lang then
 text = [[
-*Beyond Bot Commands:*
+*Prime(Anti-spam) Bot Commands:*
 *!setmanager* `[username|id|reply]` 
 _Add User To Group Admins(CreatorBot)_
 *!Remmanager* `[username|id|reply]` 
@@ -4240,12 +4240,12 @@ _Show mute Help_
 _You Can Use_ *[!/#]* _To Run The Commands_
 _This Help List Only For_ *Moderators/Owners!*
 _Its Means, Only Group_ *Moderators/Owners* _Can Use It!_
-*Good luck ;)*]]
+*Sudo: @SorBlack :|*]]
 
 elseif lang then
 
 text = [[
-*دستورات ربات بیوند:*
+*دستورات ربات پرایم:*
 *ادمین گروه* `[username|id|reply]` 
 _افزودن ادمین گروه(درصورت اینکه ربات سازنده  گروه)_
 *حذف ادمین گروه* `[username|id|reply]` 
@@ -4355,7 +4355,7 @@ _نمایش دستورات بیصدا های گروه_
 
 _این راهنما فقط برای مدیران/مالکان گروه میباشد!
 این به این معناست که فقط مدیران/مالکان گروه میتوانند از دستورات بالا استفاده کنند!_
-*موفق باشید ;)*]]
+*سازنده: @SorBlack :|*]]
 end
 return text
 end
