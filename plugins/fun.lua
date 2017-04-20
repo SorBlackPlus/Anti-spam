@@ -1,6 +1,6 @@
 
 --Begin Fun.lua By @PrimeTeam
---Special Thx To @SorBlack
+--Special Thx To @Sorblack
 --------------------------------
 
 local function run_bash(str)
@@ -236,7 +236,7 @@ if matches[1]:lower() == 'voice' or matches[1]:lower() == "تبدیل به صد�
       return nil
       else
   local url = "http://tts.baidu.com/text2audio?lan=en&ie=UTF-8&text="..textc
-  local file = download_to_file(url,'Pr-UniQue.mp3')
+  local file = download_to_file(url,'BD-UniQue.mp3')
  				tdcli.sendDocument(msg.to.id, 0, 0, 1, nil, file, '@PrimeTeam', dl_cb, nil)
    end
 end
@@ -309,7 +309,7 @@ end
 		local  file = download_to_file(url,'text.jpg')
 		tdcli.sendPhoto(msg.to.id, 0, 0, 1, nil, file, "@PrimeTeam", dl_cb, nil)
 	end
-	--------------------------------
+--------------------------------
 if matches[1]:lower() == "me" or matches[1] == "من"  then
 if msg.from.username then
 username = '@'..check_markdown(msg.from.username)
@@ -406,154 +406,10 @@ if matches[1]:lower() == 'edit' or matches[1] == 'ادیت' and msg.reply_to_mes
 local tExt = matches[2]
 tdcli.editMessageCaption(msg.to.id, msg.reply_to_message_id_, nil, tExt)
 end
-	
-
-
---------------------------------
-if matches[1]:lower() == "helpfun" or matches[1] == "راهنمای سرگرمی" then
-local hash = "gp_lang:"..msg.to.id
-local lang = redis:get(hash)
-if not lang then
-helpfun = [[
-_Prime Anti-Spam Fun Help Commands:_
-
-*!time*
-_Get time in a sticker_
-
-*!short* `[link]`
-_Make short url_
-
-*!voice* `[text]`
-_Convert text to voice_
-
-*!tr* `[lang] [word]`
-_Translates FA to EN and EN to FA_
-_Example:_
-*!tr fa hi*
-
-*!sticker* `[word]`
-_Convert text to sticker_
-
-*!photo* `[word]`
-_Convert text to photo_
-
-*!azan* `[city]`
-_Get Azan time for your city_
-
-*!calc* `[number]`
-Calculator
-
-*!praytime* `[city]`
-_Get Patent (Pray Time)_
-
-*!tosticker* `[reply]`
-_Convert photo to sticker_
-
-*!tophoto* `[reply]`
-_Convert text to photo_
-
-*!weather* `[city]`
-_Get weather_
-
-*!nerkh* 
-_nerkh bot_
-
-*!setnerkh* `[text]`
-_Registration rates_
-
-*!delnerkh* 
-_delet nerkh_
-
-*!me* 
-_Information_
-
-*!ping* 
-_Notice of online being_
-
-*!addkick* 
-_Add people Remo has been_
-
-*!addkick* 
-_Clean the black list, group_
-
-_You can use_ *[!/#]* _at the beginning of commands._
-
-*Sudo: @sorblack :|*]]
-tdcli.sendMessage(msg.chat_id_, 0, 1, helpfun, 1, 'md')
-else
-
-helpfun = [[
-_راهنمای سرگرمی ربات پرایم:_
-
-*ساعت*
-_دریافت ساعت به صورت استیکر_
-
-*لینک کوتاه* `[لینک]`
-_کوتاه کننده لینک_
-
-*تبدیل به صدا* `[متن]`
-_تبدیل متن به صدا_
-
-*ترجمه* `[زبان]` `[کلمه]`
-_ترجمه متن فارسی به انگلیسی وبرعکس_
-_مثال:_
-_ترجمه زبان سلام_
-
-*استیکر* `[کلمه]`
-_تبدیل متن به استیکر_
-
-*عکس* `[کلمه]`
-_تبدیل متن به عکس_
-
-*اذان* `[شهر]`
-_دریافت اذان_
-
-*حساب کن* `[عدد]`
-_ماشین حساب_
-
-*ساعات شرعی* `[شهر]`
-_اعلام ساعات شرعی_
-
-*تبدیل به استیکر* `[ریپلی]`
-_تبدیل عکس به استیکر_
-
-*تبدیل به عکس* `[ریپلی]`
-_تبدیل استیکر‌به عکس_
-
-*اب هوا* `[شهر]`
-_دریافت اب وهوا_
-
-*نرخ*
-_دریافت نرخ ربات_
-
-*تنظیم نرخ* `[متن]`
-_تنظیم نرخ ربات_
-
-*پاک کردن نرخ*
-_پاک کردن نرخ_
-
-*افزودن ریمو*
-_افزودن ریمو شدگان گروه_
-
-*ربات*
-_وضعیت ربات_
-
-
-*پاک کردن بلک لیست*
-_پاک کردن لیست سیاه گروه_
-
-*شما میتوانید از [!/#] در اول دستورات برای اجرای آنها بهره بگیرید*
-
-سازنده: @sorblack :|]]
-tdcli.sendMessage(msg.chat_id_, 0, 1, helpfun, 1, 'md')
-end
-
-end
 end
 --------------------------------
 return {               
 	patterns = {
-command ..  "([Hh]elpfun)$",
 command ..  "([Ww]eather) (.*)$",
 command ..	"([Cc]alc) (.*)$",
 command ..	"([Tt]ime)$",
@@ -578,7 +434,6 @@ command ..  "([Nn]erkh)$",
 command ..  "([Ee]dit) (.*)",
 command ..  "([Ee]dit) (.*)",
 command ..  "([Ee]cho) (.*)",
-	"^([Hh]elpfun)$",
 	"^([Ww]eather) (.*)$",
 	"^([Cc]alc) (.*)$",
 	"^([Tt]ime)$",
@@ -605,7 +460,6 @@ command ..  "([Ee]cho) (.*)",
 	"^([Ee]cho) (.*)$"	
 		}, 
 		patterns_fa = {
-  "^(راهنمای سرگرمی)$",
   "^(اب و هوا) (.*)$",
 	"^(حساب کن) (.*)$",
 	"^(ساعت)$",
@@ -620,7 +474,7 @@ command ..  "([Ee]cho) (.*)",
 	"^(لینک کوتاه) (.*)$",
 	"^(تبدیل به عکس) (.+)$",
 	"^(تبدیل به استیکر) (.+)$",
-	"^(من)$",
+    "^(من)$",
 	"^(پاک کردن) (بلک لیست)$",
 	"^(ربات)$",
     "^(افزودن ریمو)$",
@@ -634,4 +488,4 @@ command ..  "([Ee]cho) (.*)",
 	run = run,
 	}
 
---#by @PrimeTeam :|
+--#by @PrimeTeam :)
